@@ -88,6 +88,11 @@ public class viewPanel extends javax.swing.JPanel {
         });
 
         updateButton.setText("Update");
+        updateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateButtonActionPerformed(evt);
+            }
+        });
 
         nameLabel.setText("Name:");
 
@@ -98,6 +103,11 @@ public class viewPanel extends javax.swing.JPanel {
         ageLabel.setText("Age:");
 
         viewButton.setText("View");
+        viewButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -181,9 +191,40 @@ public class viewPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "User Information is deleted successfully.");
             poplutateTable();
         }
-//        clearFields();
-
     }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
+        // TODO add your handling code here:
+        int selectedIndex = userTable.getSelectedRow();
+        if (selectedIndex < 0) {
+            JOptionPane.showMessageDialog(this, "Please select a row to be viewed", "Error - No selection", JOptionPane.WARNING_MESSAGE);
+        } else {
+            DefaultTableModel model = (DefaultTableModel) userTable.getModel();
+            User selectedUser = (User) model.getValueAt(selectedIndex, 0);
+            nameField.setText(selectedUser.getName());
+            ageField.setText(String.valueOf(selectedUser.getAge()));
+            numberField.setText(String.valueOf(selectedUser.getTelephoneNumber()));
+            cityField.setText(selectedUser.getCity());
+        }
+    }//GEN-LAST:event_viewButtonActionPerformed
+
+    private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
+        // TODO add your handling code here:
+        User selectedUser;
+        int selectedIndex = userTable.getSelectedRow();
+        if (selectedIndex < 0) {
+            JOptionPane.showMessageDialog(this, "Please select a row to be updated", "Error - No selection", JOptionPane.WARNING_MESSAGE);
+        } else {
+            DefaultTableModel model = (DefaultTableModel) userTable.getModel();
+            selectedUser = (User) model.getValueAt(selectedIndex, 0);
+            selectedUser.setAge(Integer.parseInt(ageField.getText()));
+            selectedUser.setCity(cityField.getText());
+            selectedUser.setName(nameField.getText());
+            selectedUser.setTelephoneNumber(Long.parseLong(numberField.getText()));
+            JOptionPane.showMessageDialog(this, "User updated successfully", "Success", HEIGHT);
+            poplutateTable();
+        }
+    }//GEN-LAST:event_updateButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -213,5 +254,13 @@ public class viewPanel extends javax.swing.JPanel {
             row[1] = u.getCity();
             model.addRow(row);
         }
+        clearFields();
+    }
+
+    private void clearFields() {
+        nameField.setText("");
+        ageField.setText("");
+        numberField.setText("");
+        cityField.setText("");
     }
 }
